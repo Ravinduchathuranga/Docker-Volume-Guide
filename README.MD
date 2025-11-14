@@ -52,8 +52,8 @@ Bind mounts can be useful for development purposes, as they allow you to directl
     3. Add the directory you want to use as a bind mount by clicking on the "+" button and selecting the folder.
     4. Apply and restart Docker Desktop if prompted.
 
-# Do we need Virtual file shares update to manage bind volumes ? 
-## No — bind mounts do *not* depend on Docker Desktop or Virtual File Shares.
+## Do we need Virtual file shares update to manage bind volumes ? 
+### No — bind mounts do *not* depend on Docker Desktop or Virtual File Shares.
 
 Here’s the clear breakdown:
 
@@ -78,7 +78,7 @@ This works immediately as long as permissions allow it.
 
 ---
 
-# 🖥️ **Bind mounts require "file sharing" *only* on Docker Desktop (Mac/Windows)**
+### 🖥️ **Bind mounts require "file sharing" *only* on Docker Desktop (Mac/Windows)**
 
 On **Windows** and **macOS**, Docker runs inside a Linux virtual machine.
 The VM cannot automatically access your host filesystem, so Docker Desktop requires:
@@ -99,7 +99,7 @@ Docker Desktop needs to “share” `/Users/myfolder` into the Linux VM first.
 
 ---
 
-# 🧠 **Key concept**
+### 🧠 **Key concept**
 
 | Platform                      | Bind mount works natively?             | Requires Virtual File Share config? |
 | ----------------------------- | -------------------------------------- | ----------------------------------- |
@@ -109,11 +109,11 @@ Docker Desktop needs to “share” `/Users/myfolder` into the Linux VM first.
 
 ---
 
-# 📌 **So the answer:**
+### 📌 **So the answer:**
 
-### 👉 **Bind mounts only require Virtual File Shares on Docker Desktop (Windows/macOS).**
+#### 👉 **Bind mounts only require Virtual File Shares on Docker Desktop (Windows/macOS).**
 
-### 👉 **On Linux, bind mounts work natively and do *not* use Virtual File Shares at all.**
+#### 👉 **On Linux, bind mounts work natively and do *not* use Virtual File Shares at all.**
 
 ---
 
@@ -130,7 +130,7 @@ If you want, I can create a clean explanation for your GitHub README breaking th
     docker run -d -p 3000:80 --rm --name feedback-app -v /home/user/feedback-data:/app/feedback feedback-node:volume
 ```
 
-# Cleaning up unused volumes
+### Cleaning up unused volumes
 Over time, you may accumulate unused volumes that are no longer needed.
 To clean up these unused volumes, you can use the following command:
 ```bash
@@ -138,4 +138,4 @@ docker volume prune
 ``` 
 This command will remove all unused volumes, freeing up space on your system.
 
-# Note: Be cautious when using this command, as it will permanently delete the volumes and their data.
+### Note: Be cautious when using this command, as it will permanently delete the volumes and their data.
