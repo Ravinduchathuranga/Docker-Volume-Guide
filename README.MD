@@ -8,10 +8,24 @@ Named volumes are stored in a part of the host filesystem which is managed by Do
 They are easy to use and are the preferred way to persist data in Docker.
 
 #### How to manage named volumes:
-- Create a volume: `docker volume create my_volume`
-- List volumes: `docker volume ls`
-- Inspect a volume: `docker volume inspect my_volume`
-- Remove a volume: `docker volume rm my_volume`
+- Create a volume: 
+``` bash
+     docker volume create my_volume
+```
+- List volumes:
+```bash
+     docker volume ls   
+```
+
+- Inspect a volume:
+```bash
+     docker volume inspect my_volume
+```            
+
+- Remove a volume:
+````bash    
+     docker volume rm my_volume
+````
 
 - Create a volume alongside with docker run:
 ```bash
