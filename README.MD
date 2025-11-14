@@ -31,14 +31,104 @@ They are easy to use and are the preferred way to persist data in Docker.
 ```bash
     docker run -d -v my_volume:/path/in/container my_image
 ```
+
 - Example of running a container with a named volume:
 ```bash
     docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback feedback-node:volume
 ```
 
+
 2. **Bind Mounts**: These allow you to mount a file or directory from the host filesystem into a container. 
 Bind mounts can be useful for development purposes, as they allow you to directly access and modify files on the host system from within the container.
 
+- There are some considerations when using bind mounts:
+  - The file or directory on the host must exist before you can mount it into a container.
+  - Changes made to the files in the bind mount are reflected on both the host and the container.
+  - Bind mounts can pose security risks if sensitive files from the host are exposed to the container.
+
+- How to add your host directory as a bind mount in Docker resource settings (Docker Desktop):
+    1. Open Docker Desktop and go to Settings.
+    2. Navigate to the Resources section and select File Sharing.
+    3. Add the directory you want to use as a bind mount by clicking on the "+" button and selecting the folder.
+    4. Apply and restart Docker Desktop if prompted.
+
+# Do we need Virtual file shares update to manage bind volumes ? 
+## No — bind mounts do *not* depend on Docker Desktop or Virtual File Shares.
+
+Here’s the clear breakdown:
+
+---
+
+#### ✅ **Bind mounts work natively on Linux**
+
+On **Linux**, Docker runs directly on the host OS.
+This means:
+
+* There is **no VM**
+* There is **no “file sharing” layer**
+* There is **no requirement for Virtual File Shares**
+
+You can bind-mount any host directory directly:
+
+```bash
+docker run -v /host/path:/container/path IMAGE
+```
+
+This works immediately as long as permissions allow it.
+
+---
+
+# 🖥️ **Bind mounts require "file sharing" *only* on Docker Desktop (Mac/Windows)**
+
+On **Windows** and **macOS**, Docker runs inside a Linux virtual machine.
+The VM cannot automatically access your host filesystem, so Docker Desktop requires:
+
+### ✔ File Sharing (macOS)
+
+### ✔ Resources → File Sharing (Windows)
+
+These settings create **Virtual File Shares** between your host OS and the internal Linux VM.
+
+This is why bind mounts on Docker Desktop require configuration:
+
+```bash
+docker run -v /Users/myfolder:/data myimage
+```
+
+Docker Desktop needs to “share” `/Users/myfolder` into the Linux VM first.
+
+---
+
+# 🧠 **Key concept**
+
+| Platform                      | Bind mount works natively?             | Requires Virtual File Share config? |
+| ----------------------------- | -------------------------------------- | ----------------------------------- |
+| **Linux**                     | ✅ Yes                                  | ❌ No                                |
+| **Docker Desktop on macOS**   | ⚠ Works only after File Sharing config | ✅ Yes                               |
+| **Docker Desktop on Windows** | ⚠ Works only after File Sharing config | ✅ Yes                               |
+
+---
+
+# 📌 **So the answer:**
+
+### 👉 **Bind mounts only require Virtual File Shares on Docker Desktop (Windows/macOS).**
+
+### 👉 **On Linux, bind mounts work natively and do *not* use Virtual File Shares at all.**
+
+---
+
+If you want, I can create a clean explanation for your GitHub README breaking this down clearly for users on Linux, macOS, and Windows.
+
+
+#### How to manage bind mounts:
+- Create a bind mount alongside with docker run:
+```bash
+    docker run -d -v /path/on/host:/path/in/container my_image
+```
+- Example of running a container with a bind mount:
+```bash
+    docker run -d -p 3000:80 --rm --name feedback-app -v /home/user/feedback-data:/app/feedback feedback-node:volume
+```
 
 
 ## Creating a Volume
