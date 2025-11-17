@@ -135,6 +135,18 @@ If you want, I can create a clean explanation for your GitHub README breaking th
     ```bash
     docker run -d -p 3000:80 --rm --name feedback-app -v "/home/user/feedback-data:/app/feedback" feedback-node:volume
     ```
+- Combinding and merging different types of volumes:
+    - You can combine named volumes and bind mounts in a single `docker run` command. For example, to use a named volume for feedback data and a bind mount for configuration files, you can run:    
+    ```bash
+        docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback -v /home/user/config:/app/config feedback-node:volume
+    ```
+    - This command mounts the named volume `feedback` to `/app/feedback` in the container and the host directory `/home/user/config` to `/app/config` in the container.
+    - This flexibility allows you to choose the best storage solution for different types of data within the same container.
+    - Or you and mention the Dockerfile way of creating multiple volumes as well. 
+    ```bash
+        ## Create a volume to persist node_modules
+        VOLUME ["/app/node_modules"]
+    ```
 ### Cleaning up unused volumes
 Over time, you may accumulate unused volumes that are no longer needed.
 To clean up these unused volumes, you can use the following command:
