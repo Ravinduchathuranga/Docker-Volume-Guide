@@ -129,7 +129,12 @@ If you want, I can create a clean explanation for your GitHub README breaking th
 ```bash
     docker run -d -p 3000:80 --rm --name feedback-app -v /home/user/feedback-data:/app/feedback feedback-node:volume
 ```
-
+- Extra point here 
+    - Ensure that the host directory (`/home/user/feedback-data` in the example) exists before running the container.
+    - Covering up with double quotes in case there are spaces in the path: 
+    ```bash
+    docker run -d -p 3000:80 --rm --name feedback-app -v "/home/user/feedback-data:/app/feedback" feedback-node:volume
+    ```
 ### Cleaning up unused volumes
 Over time, you may accumulate unused volumes that are no longer needed.
 To clean up these unused volumes, you can use the following command:
@@ -139,3 +144,5 @@ docker volume prune
 This command will remove all unused volumes, freeing up space on your system.
 
 #### Note: Be cautious when using this command, as it will permanently delete the volumes and their data.
+
+### 
